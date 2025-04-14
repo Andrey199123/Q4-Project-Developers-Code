@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robot Control Dashboard</title>
+    <style>
+        body {
+            background-color: #1e1e1e;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 20px;
+            height: calc(100vh - 100px);
+        }
+        .panel {
+            background-color: #333;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #ddd;
+            overflow-y: 500px;
+        }
+        .video-panel {
+            overflow: auto;
+            grid-column: 1;
+            grid-row: 1 / span 2;
+        }
+        .stream-container {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            height: 100%;
+            gap: 20px;
+        }
+        .stream-box {
+            width: 100%;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .stream-box h3 {
+            margin-bottom: 10px;
+            color: #4caf50;
+        }
+        .stream-box img {
+            width: 100%;
+            height: calc(100% - 40px);
+            object-fit: contain;
+            border: 2px solid #555;
+            border-radius: 4px;
+        }
+        .control-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 10px;
+            padding: 15px;
+        }
+        .control-grid button {
+            width: 80px;
+            height: 80px;
+            font-size: 24px;
+            color: #ffffff;
+            background-color: #555;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .control-grid button:hover {
+            background-color: #666;
+        }
+        .forward { grid-column: 2; grid-row: 1; }
+        .backward { grid-column: 2; grid-row: 3; }
+        .left { grid-column: 1; grid-row: 2; }
+        .right { grid-column: 3; grid-row: 2; }
+        .start { grid-column: 1; grid-row: 1; background-color: #2e7d32 !important; }
+        .stop { grid-column: 3; grid-row: 1; background-color: #c62828 !important; }
+        .log-panel {
+            max-height: 200px;
+            overflow-y: auto;
+            width: 45%;
+            padding: 10px;
+            background-color: #444;
+            border-radius: 4px;
+            margin: 0 10px;
+        }
+        .log-panel h3 {
+            margin-top: 0;
+            text-align: center;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #555;
+            color: #4caf50;
+        }
+        .log-panel ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        .log-panel li {
+            padding: 5px 10px;
+            border-bottom: 1px solid #555;
+            font-size: 14px;
+            transition: background-color 1s;
+        }
+        h2 {
+            margin-bottom: 20px;
+            color: #4caf50;
+        }
+    </style>
+</head>
+<body>
+    <h2>Welcome, {{ username }}</h2>
+    <div class="grid-container">
+        <div class="panel video-panel">
+            <div class="stream-container">
+                <div class="stream-box">
+                    <h3>Lane Detection Stream</h3>
+                    <img id="overlay-stream" src="/video_feed/overlay" alt="Lane Detection Stream Unavailable" />
+                </div>
+                <div class="stream-box">
+                    <h3>Raw Video Stream</h3>
+                    <img id="raw-stream" src="/video_feed/raw" alt="Raw Stream Unavailable" />
+                </div>
+            </div>
+        </div>
+        
+        <div class="panel robot-control">
+            <h3>Robot Control</h3>
+            <div class="control-grid">
+                <button class="forward" onmousedown="" onmouseup="">↑</button>
+                <button class="left" onmousedown="" onmouseup="">←</button>
+                <button class="right" onmousedown="" onmouseup="">→</button>
+                <button class="backward" onmousedown="" onmouseup="">↓</button>
+                <button class="stop" onclick="startRobot('exit')">Stop</button>
+                <button class="start" onclick="startRobot('start')">Start</button>
+            </div>
+        </div>
+        
+        <div class="panel logs-panel">
+            <div class="log-panel">
+                <h3>Command Log</h3>
+                <ul id="command-log-list"></ul>
+            </div>
+            <div class="log-panel">
+                <h3>Login Log</h3>
+                <ul id="login-log-list"></ul>
+            </div>
+        </div>
+    </div>
+    <script>
+        class LogManager {
+            constructor() {
+                this.commandLogList = document.getElementById('command-log-list');
+                this.loginLogList = document.getElementById('login-log-list');
+                this.maxLogItems = 50;
+                this.setupEventSource();
+                this.loadInitialLogs();
+            }
+            async loadInitialLogs() {
+                try {
+                    const [logsResponse, loginLogsResponse] = await Promise.all([
+                        fetch('/get-logs'),
+                        fetch('/get-login-logs')
+                    ]);
+                    if (!logsResponse.ok || !loginLogsResponse.ok) {
+                        throw new Error('Failed to fetch logs');
+                    }
+                    const logsData = await logsResponse.json();
+                    const loginLogsData = await loginLogsResponse.json();
+                    this.commandLogList.innerHTML = '';
+                    this.loginLogList.innerHTML = '';
+                    logsData.logs.forEach(log => {
+                        const li = document.createElement('li');
+                        li.textContent = log;
+                        this.commandLogList.appendChild(li);
+                    });
+                    loginLogsData.logs.forEach(log => {
+                        const li = document.createElement('li');
+                        li.textContent = log;
+                        this.loginLogList.appendChild(li);
+                    });
+                } catch (error) {
+                    console.error('Error loading initial logs:', error);
+                }
+            }
+            setupEventSource() {
+                const eventSource = new EventSource('/events');
+                eventSource.onmessage = (event) => {
+                    const data = JSON.parse(event.data);
+                    this.addLog(data.type, data.message);
+                };
+            }
+            addLog(type, message) {
+                const logList = type === 'command' ? this.commandLogList : this.loginLogList;
+                const li = document.createElement('li');
+                li.textContent = message;
+                if (logList.children.length >= this.maxLogItems) {
+                    logList.removeChild(logList.firstChild);
+                }
+                logList.appendChild(li);
+            }
+        }
+        const logManager = new LogManager();
+        function control_robot(action) {
+        fetch('/send-command', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ command: action })
+    }).catch(error => console.error('Error sending command:', error));
+}
+        function startRobot(action) {
+            fetch('/start-robot', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action })
+            }).catch(error => console.error('Error starting robot:', error));
+            location.reload();
+        }
+
+        window.addEventListener('keydown', (event) => {
+            if (event.key === 'ArrowUp') {
+                control_robot('forward');
+            } else if (event.key === 'ArrowDown') {
+                control_robot('backward');
+            } else if (event.key === 'ArrowLeft') {
+                control_robot('left');
+            } else if (event.key === 'ArrowRight') {
+                control_robot('right');
+            }
+        });
+        window.addEventListener('keyup', (event) => {
+            control_robot('stop');
+        });
+    </script>
+</body>
+</html>

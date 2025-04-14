@@ -1,0 +1,102 @@
+2025-03-12 18:35:23,200 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://192.168.1.98:5001
+2025-03-12 18:35:23,200 - INFO - [33mPress CTRL+C to quit[0m
+2025-03-12 18:35:23,201 - INFO -  * Restarting with stat
+2025-03-12 18:35:23,820 - WARNING -  * Debugger is active!
+2025-03-12 18:35:23,825 - INFO -  * Debugger PIN: 113-966-501
+2025-03-12 18:35:25,280 - INFO - 127.0.0.1 - - [12/Mar/2025 18:35:25] "[35m[1mGET / HTTP/1.1[0m" 500 -
+2025-03-12 18:35:25,328 - INFO - 127.0.0.1 - - [12/Mar/2025 18:35:25] "[36mGET /?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+2025-03-12 18:35:25,328 - INFO - 127.0.0.1 - - [12/Mar/2025 18:35:25] "[36mGET /?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+2025-03-12 18:35:25,361 - INFO - 127.0.0.1 - - [12/Mar/2025 18:35:25] "GET /?__debugger__=yes&cmd=resource&f=console.png&s=G1JMDSn7e6swmX3jYUT2 HTTP/1.1" 200 -
+2025-03-12 18:35:34,266 - INFO - 192.168.1.98 - - [12/Mar/2025 18:35:34] "[35m[1mGET / HTTP/1.1[0m" 500 -
+2025-03-12 18:35:34,312 - INFO - 192.168.1.98 - - [12/Mar/2025 18:35:34] "[36mGET /?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+2025-03-12 18:35:34,312 - INFO - 192.168.1.98 - - [12/Mar/2025 18:35:34] "[36mGET /?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+2025-03-12 18:36:17,854 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://192.168.1.98:5001
+2025-03-12 18:36:17,854 - INFO - [33mPress CTRL+C to quit[0m
+2025-03-12 18:36:17,855 - INFO -  * Restarting with stat
+2025-03-12 18:36:18,467 - WARNING -  * Debugger is active!
+2025-03-12 18:36:18,472 - INFO -  * Debugger PIN: 113-966-501
+2025-03-12 18:36:18,911 - INFO - 127.0.0.1 - - [12/Mar/2025 18:36:18] "GET / HTTP/1.1" 200 -
+2025-03-12 18:36:18,983 - INFO - 127.0.0.1 - - [12/Mar/2025 18:36:18] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-03-12 18:36:20,766 - INFO - 127.0.0.1 - - [12/Mar/2025 18:36:20] "[31m[1mPOST /login HTTP/1.1[0m" 401 -
+2025-03-12 18:36:23,644 - INFO - 127.0.0.1 - - [12/Mar/2025 18:36:23] "[32mPOST /register HTTP/1.1[0m" 302 -
+2025-03-12 18:36:23,647 - INFO - 127.0.0.1 - - [12/Mar/2025 18:36:23] "GET / HTTP/1.1" 200 -
+2025-03-12 18:36:24,712 - INFO - john logged in at 2025-03-12 18:36:24.712160
+2025-03-12 18:36:24,713 - INFO - 127.0.0.1 - - [12/Mar/2025 18:36:24] "[32mPOST /login HTTP/1.1[0m" 302 -
+2025-03-12 18:36:24,717 - INFO - 127.0.0.1 - - [12/Mar/2025 18:36:24] "GET /dashboard HTTP/1.1" 200 -
+2025-03-12 18:36:24,740 - INFO - 127.0.0.1 - - [12/Mar/2025 18:36:24] "GET /get-login-logs HTTP/1.1" 200 -
+2025-03-12 18:36:24,743 - INFO - 127.0.0.1 - - [12/Mar/2025 18:36:24] "GET /get-logs HTTP/1.1" 200 -
+2025-03-12 18:36:24,917 - INFO - 127.0.0.1 - - [12/Mar/2025 18:36:24] "GET /video_feed/raw HTTP/1.1" 200 -
+2025-03-12 18:36:24,919 - INFO - 127.0.0.1 - - [12/Mar/2025 18:36:24] "GET /video_feed/overlay HTTP/1.1" 200 -
+2025-03-12 18:36:26,094 - INFO - Command executed: 
+2025-03-12 18:36:26,094 - INFO - 127.0.0.1 - - [12/Mar/2025 18:36:26] "POST /start-robot HTTP/1.1" 200 -
+2025-03-12 18:36:26,094 - INFO - 127.0.0.1 - - [12/Mar/2025 18:36:26] "GET /events HTTP/1.1" 200 -
+2025-03-12 18:36:26,098 - INFO - 127.0.0.1 - - [12/Mar/2025 18:36:26] "GET /dashboard HTTP/1.1" 200 -
+2025-03-12 18:36:26,107 - INFO - 127.0.0.1 - - [12/Mar/2025 18:36:26] "GET /get-login-logs HTTP/1.1" 200 -
+2025-03-12 18:36:26,113 - INFO - 127.0.0.1 - - [12/Mar/2025 18:36:26] "GET /get-logs HTTP/1.1" 200 -
+2025-03-12 18:36:26,241 - INFO - 127.0.0.1 - - [12/Mar/2025 18:36:26] "GET /video_feed/overlay HTTP/1.1" 200 -
+2025-03-12 18:36:26,243 - INFO - 127.0.0.1 - - [12/Mar/2025 18:36:26] "GET /video_feed/raw HTTP/1.1" 200 -
+2025-03-12 18:36:56,336 - INFO - 192.168.1.98 - - [12/Mar/2025 18:36:56] "GET / HTTP/1.1" 200 -
+2025-03-12 18:36:56,447 - INFO - 192.168.1.98 - - [12/Mar/2025 18:36:56] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-03-12 18:36:57,270 - INFO -  * Detected change in 'C:\\Users\\Antec\\PycharmProjects\\LineWithGUI\\app.py', reloading
+2025-03-12 18:36:57,308 - INFO -  * Restarting with stat
+2025-03-12 18:36:57,924 - WARNING -  * Debugger is active!
+2025-03-12 18:36:57,928 - INFO -  * Debugger PIN: 113-966-501
+2025-03-12 18:37:01,233 - INFO - 192.168.1.98 - - [12/Mar/2025 18:37:01] "[31m[1mPOST /login HTTP/1.1[0m" 401 -
+2025-03-12 18:37:06,264 - INFO - 127.0.0.1 - - [12/Mar/2025 18:37:06] "GET / HTTP/1.1" 200 -
+2025-03-12 18:37:06,338 - INFO - 127.0.0.1 - - [12/Mar/2025 18:37:06] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-03-12 18:37:07,227 - INFO - john logged in at 2025-03-12 18:37:07.227455
+2025-03-12 18:37:07,227 - INFO - 127.0.0.1 - - [12/Mar/2025 18:37:07] "[32mPOST /login HTTP/1.1[0m" 302 -
+2025-03-12 18:37:07,232 - INFO - 127.0.0.1 - - [12/Mar/2025 18:37:07] "GET /dashboard HTTP/1.1" 200 -
+2025-03-12 18:37:07,247 - INFO - 127.0.0.1 - - [12/Mar/2025 18:37:07] "GET /get-login-logs HTTP/1.1" 200 -
+2025-03-12 18:37:07,250 - INFO - 127.0.0.1 - - [12/Mar/2025 18:37:07] "GET /get-logs HTTP/1.1" 200 -
+2025-03-12 18:37:07,281 - INFO - 127.0.0.1 - - [12/Mar/2025 18:37:07] "GET /video_feed/overlay HTTP/1.1" 200 -
+2025-03-12 18:37:07,296 - INFO - 127.0.0.1 - - [12/Mar/2025 18:37:07] "GET /video_feed/raw HTTP/1.1" 200 -
+2025-03-12 18:37:08,067 - INFO - Command executed: 
+2025-03-12 18:37:08,067 - INFO - 127.0.0.1 - - [12/Mar/2025 18:37:08] "POST /start-robot HTTP/1.1" 200 -
+2025-03-12 18:37:08,067 - INFO - 127.0.0.1 - - [12/Mar/2025 18:37:08] "GET /events HTTP/1.1" 200 -
+2025-03-12 18:37:08,070 - INFO - 127.0.0.1 - - [12/Mar/2025 18:37:08] "GET /dashboard HTTP/1.1" 200 -
+2025-03-12 18:37:08,079 - INFO - 127.0.0.1 - - [12/Mar/2025 18:37:08] "GET /get-login-logs HTTP/1.1" 200 -
+2025-03-12 18:37:08,086 - INFO - 127.0.0.1 - - [12/Mar/2025 18:37:08] "GET /get-logs HTTP/1.1" 200 -
+2025-03-12 18:37:08,146 - INFO - 127.0.0.1 - - [12/Mar/2025 18:37:08] "GET /video_feed/raw HTTP/1.1" 200 -
+2025-03-12 18:37:08,171 - INFO - 127.0.0.1 - - [12/Mar/2025 18:37:08] "GET /video_feed/overlay HTTP/1.1" 200 -
+2025-03-12 18:37:32,453 - INFO - 127.0.0.1 - - [12/Mar/2025 18:37:32] "GET /dashboard HTTP/1.1" 200 -
+2025-03-12 18:37:32,474 - INFO - 127.0.0.1 - - [12/Mar/2025 18:37:32] "GET /get-login-logs HTTP/1.1" 200 -
+2025-03-12 18:37:32,485 - INFO - 127.0.0.1 - - [12/Mar/2025 18:37:32] "GET /get-logs HTTP/1.1" 200 -
+2025-03-12 18:37:32,494 - INFO - 127.0.0.1 - - [12/Mar/2025 18:37:32] "GET /video_feed/overlay HTTP/1.1" 200 -
+2025-03-12 18:37:32,509 - INFO - 127.0.0.1 - - [12/Mar/2025 18:37:32] "GET /video_feed/raw HTTP/1.1" 200 -
+2025-03-12 18:37:53,487 - INFO - Command executed: Error stopping scripts: Command failed: ssh: connect to host 192.168.240.22 port 22: Connection timed out
+
+2025-03-12 18:37:53,487 - INFO - 127.0.0.1 - - [12/Mar/2025 18:37:53] "POST /start-robot HTTP/1.1" 200 -
+2025-03-12 18:37:53,488 - INFO - 127.0.0.1 - - [12/Mar/2025 18:37:53] "GET /events HTTP/1.1" 200 -
+2025-03-12 18:37:53,488 - INFO - 127.0.0.1 - - [12/Mar/2025 18:37:53] "GET /events HTTP/1.1" 200 -
+2025-03-12 20:16:38,883 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://192.168.1.98:5001
+2025-03-12 20:16:38,883 - INFO - [33mPress CTRL+C to quit[0m
+2025-03-12 20:16:38,885 - INFO -  * Restarting with stat
+2025-03-12 20:16:39,506 - WARNING -  * Debugger is active!
+2025-03-12 20:16:39,510 - INFO -  * Debugger PIN: 113-966-501
+2025-03-12 20:16:40,553 - INFO - 127.0.0.1 - - [12/Mar/2025 20:16:40] "GET / HTTP/1.1" 200 -
+2025-03-12 20:16:40,730 - INFO - 127.0.0.1 - - [12/Mar/2025 20:16:40] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-03-12 20:16:41,939 - INFO - john logged in at 2025-03-12 20:16:41.939616
+2025-03-12 20:16:41,940 - INFO - 127.0.0.1 - - [12/Mar/2025 20:16:41] "[32mPOST /login HTTP/1.1[0m" 302 -
+2025-03-12 20:16:41,949 - INFO - 127.0.0.1 - - [12/Mar/2025 20:16:41] "GET /dashboard HTTP/1.1" 200 -
+2025-03-12 20:16:41,979 - INFO - 127.0.0.1 - - [12/Mar/2025 20:16:41] "GET /video_feed/overlay HTTP/1.1" 200 -
+2025-03-12 20:16:41,984 - INFO - 127.0.0.1 - - [12/Mar/2025 20:16:41] "GET /get-login-logs HTTP/1.1" 200 -
+2025-03-12 20:16:41,987 - INFO - 127.0.0.1 - - [12/Mar/2025 20:16:41] "GET /get-logs HTTP/1.1" 200 -
+2025-03-12 20:16:41,995 - INFO - 127.0.0.1 - - [12/Mar/2025 20:16:41] "GET /video_feed/raw HTTP/1.1" 200 -
+2025-03-12 20:16:42,982 - INFO - Command executed: 
+2025-03-12 20:16:42,982 - INFO - 127.0.0.1 - - [12/Mar/2025 20:16:42] "POST /start-robot HTTP/1.1" 200 -
+2025-03-12 20:16:42,982 - INFO - 127.0.0.1 - - [12/Mar/2025 20:16:42] "GET /events HTTP/1.1" 200 -
+2025-03-12 20:16:42,985 - INFO - 127.0.0.1 - - [12/Mar/2025 20:16:42] "GET /dashboard HTTP/1.1" 200 -
+2025-03-12 20:16:42,994 - INFO - 127.0.0.1 - - [12/Mar/2025 20:16:42] "GET /get-login-logs HTTP/1.1" 200 -
+2025-03-12 20:16:43,002 - INFO - 127.0.0.1 - - [12/Mar/2025 20:16:43] "GET /get-logs HTTP/1.1" 200 -
+2025-03-12 20:16:43,081 - INFO - 127.0.0.1 - - [12/Mar/2025 20:16:43] "GET /video_feed/raw HTTP/1.1" 200 -
+2025-03-12 20:16:43,098 - INFO - 127.0.0.1 - - [12/Mar/2025 20:16:43] "GET /video_feed/overlay HTTP/1.1" 200 -
