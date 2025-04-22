@@ -1,66 +1,88 @@
+"""Version 1.0.0
+Author: Emma Chetan
+Functions:
+   ORB(frame) --> Returns an image with either no change or a text box displaying
+               'WE ARE NOT ALONE!!'
+
+   show_not_alone(frame) --> Puts a textbox with red background and white lettering
+               on the image; displays 'WE ARE NOT ALONE!!'
+
+Sources:
+https://docs.opencv.org/4.x/dd/d43/tutorial_py_video_display.html
+https://youtu.be/lr1Sr0HJOoM?feature=shared
+https://www.geeksforgeeks.org/python-opencv-cv2-puttext-method/
+
+"""
+
 import cv2 as cv
-import numpy as np
-import matplotlib.pyplot as plt
-import os
 
+def ORB(frame):
+   """Detect and display the Martian on each frame.
 
-def ORB(img2):
-   img = cv.imread('templates/martian.png', 0)
-   img2 = cv.resize(img2, (312,380))
-   img2 = cv.blur(img2, (15,15))
-   #gray_img2 = cv.imread(img2, cv.IMREAD_GRAYSCALE)
-   #gray_img = cv.imread(img, cv.IMREAD_GRAYSCALE)
+   Keyword arguments:
+      frame -- An image captured from a live video stream,
+               Mat | ndarray[Any, dtype] | ndarray = (cap. read())[1]
+   Returns:
+      frame -- An image with either no change or a text box displaying
+               'WE ARE NOT ALONE!!'
+   """
 
+   martian = cv.imread('templates/martian.png', 0)
+   frame_resized = cv.resize(frame, (312,380)) # Resize to dimensions of the martian template for ORB
+   frame_blur = cv.blur(frame_resized, (15,15)) # Reduce noise for less inaccurate matches
 
    orb = cv.ORB_create()
 
-   keypoints1, descriptors1 = orb.detectAndCompute(img, None)
-   keypoints2, descriptors2 = orb.detectAndCompute(img2, None)
+   keypoints1, descriptors1 = orb.detectAndCompute(martian, None)
+   keypoints2, descriptors2 = orb.detectAndCompute(frame_blur, None)
 
    bf = cv.BFMatcher(cv.NORM_HAMMING, crossCheck=True)
    try:
-      matches = bf.match(descriptors1,descriptors2) # descriptors2 is None
+      matches = bf.match(descriptors1,descriptors2)
       matches = sorted(matches, key=lambda x: x.distance)
-      num_matches = len(matches)  # 104 for other matches, 400+ for same image w/o blur
-      # Draw first 50 matches.*
-      img2 = cv.drawMatches(img, keypoints1, img2, keypoints2, matches[:50], None, flags=2)
-
-      #plt.imshow(img3), plt.show()
-      #print(num_matches)
+      num_matches = len(matches)
 
       if num_matches > 5:
-         print("we are not alone")
-         not_alone('NOT ALONE', img2)
+         show_not_alone(frame)
       else:
-         print("no matches")
+         pass
    except:
-      print("no matches")
-   return img2
+      pass
+   return frame
 
-def not_alone(text, img):
+def show_not_alone(frame):
+   """Put a text box on the frame.
+
+   Keyword arguments:
+       frame -- An image captured from a live video stream,
+               Mat | ndarray[Any, dtype] | ndarray = (cap. read())[1]
+
+   Returns:
+      frame -- An image with a red text box and white lettering displaying
+               'WE ARE NOT ALONE!!' in the top left corner.
+   """
+
    font = cv.FONT_HERSHEY_SIMPLEX
    font_scale = 1
    color = (255, 255, 255)  # White color
    thickness = 2
    position = (10, 50)  # Coordinates of the bottom-left corner of the text string in the image
 
-   # Get text size to create a background rectangle
-   text_size = cv.getTextSize(text, font, font_scale, thickness)[0]
+   text = "WE ARE NOT ALONE!!"
+
+   text_size = cv.getTextSize(text, font, font_scale, thickness)[0] # Get text size to create a background rectangle
    text_width, text_height = text_size
 
-   # Background rectangle settings
    rectangle_color = (0, 0, 255)  # Red color
    rectangle_position1 = position  # Top-left corner of the rectangle is the same as the text position
    rectangle_position2 = (position[0] + text_width, position[1] - text_height - 10)  # Bottom-right corner
 
-   # Draw the background rectangle
-   cv.rectangle(img, rectangle_position1, rectangle_position2, rectangle_color, -1)
+   cv.rectangle(frame, rectangle_position1, rectangle_position2, rectangle_color, -1)
 
-   # Put the text on the image
-   cv.putText(img, text, position, font, font_scale, color, thickness, cv.LINE_AA)
+   cv.putText(frame, text, position, font, font_scale, color, thickness, cv.LINE_AA)
 
 
-video_path = '/Users/pl1002215/PycharmProjects/object_detection/templates/IMG_5017.mov'  # Replace with your video file path
+video_path = '/Users/pl1002215/PycharmProjects/object_detection/templates/IMG_5017.mov'
 cap = cv.VideoCapture(video_path)
 
 if not cap.isOpened():
@@ -71,7 +93,7 @@ else:
       if not ret:
          break  # Break the loop if no more frames are read
 
-      cv.imshow('Video Player', ORB(frame))
+      cv.imshow('Martian Detection PWP', ORB(frame))
 
       if cv.waitKey(25) & 0xFF == ord('q'):
          break  # Break the loop if 'q' is pressed
