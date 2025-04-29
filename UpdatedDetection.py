@@ -5,9 +5,9 @@ import time
 import threading
 import cv2
 import numpy as np
-
-
 def is_5_percent_blue(frame):
+    """This is for the first milestone where we need to detect the path. All it does so far is it checks if there's more than 5% blue in the frame. If there is, the robot stops. 
+    TODO: Make this work on any color tape (possibly by using contrast)"""
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     lower_blue = np.array([100, 50, 50])
     upper_blue = np.array([130, 255, 255])
@@ -20,6 +20,12 @@ def is_5_percent_blue(frame):
 
 def detect_horizontal_line(frame):
     """
+    This function was written for the third milestone by Aashvik and tweaked by Andrey to detect turns. All it does is detect a blue horizontal line, 
+    and if the robot is on the path, that's enough for it to know that there exists a turn. 
+    Note: This does not yet detect whether there is a left or right turn, 
+    to do that the developers will likely make two separate ROIs for detecting a horizontal line on the left side vs right side of the screen to know whether there's a left or right turn.
+
+    
     Processes a single video frame to detect if significant horizontal lines
     exist within specific color ranges and Regions of Interest (ROI).
 
@@ -97,8 +103,9 @@ def detect_horizontal_line(frame):
     line_detected = horizontal_line_count >= min_horizontal_lines_required
     return line_detected
 
-
 def detect_turn(frame):
+"""This was Tyler's code for the detect the turn which didn't work really well which is why we went with Aashvik's
+Preferrably we should save this somewhere also at some point."""
     def resize_frame(frame):
         height, width = frame.shape[:2]
         aspect_ratio = width / height
@@ -301,7 +308,7 @@ def compute_center(lines, frame):
     else:
         return [0, 0, 0, 0]
 
-
+#For Threading, to make the movement work in a separate Thread in this file
 CURRENTLY_RUNNING_PROCEDURE = False
 
 
@@ -333,6 +340,7 @@ def process_frame(frame):
 
     n_lines = []
     centerline = []
+    #checks for horizontal lines (to make a turn)
     if detect_horizontal_line(frame):
 
         # def turn_left():
@@ -353,6 +361,8 @@ def process_frame(frame):
 
         #         CURRENTLY_RUNNING_PROCEDURE = False
         def turn_right():
+            """this function is for threading to make the movement work in the background
+            It gets called in a separate thread to not interfere with the rest of the detection.py code"""
             global CURRENTLY_RUNNING_PROCEDURE
             if not CURRENTLY_RUNNING_PROCEDURE:
                 CURRENTLY_RUNNING_PROCEDURE = True
