@@ -3,14 +3,11 @@ import numpy as np
 import math
 
 def is_5_percent_blue(frame):
-    hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-    lower_blue = np.array([100, 50, 50])
-    upper_blue = np.array([130, 255, 255])
-    mask = cv2.inRange(hsv, lower_blue, upper_blue)
+    mask = lanes(frame)
     total_pixels = frame.shape[0] * frame.shape[1]
-    blue_pixels = np.sum(mask > 0)
-    blue_percentage = (blue_pixels / total_pixels) * 100
-    return blue_percentage >= 5
+    black_pixels = np.sum(mask < 1)
+    black_percentage = (black_pixels / total_pixels) * 100
+    return black_percentage
 
 def lanes(frame):
     '''
@@ -21,13 +18,15 @@ def lanes(frame):
     cv2.waitKey(0)
     cv2.destroyAllWindows()
     '''
-    frame = cv2.blur(frame, (13,13))
 
-    _, binary = cv2.threshold(frame, 50, 255, cv2.THRESH_BINARY)
-    gray_result = cv2.cvtColor(binary, cv2.COLOR_BGR2GRAY)
+    #frame = cv2.blur(frame, (31, 31))
+    #_, binary = cv2.threshold(frame, 50, 255, cv2.THRESH_BINARY)
+    gray_result = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     equalized_result = cv2.equalizeHist(gray_result)
+    frame = cv2.blur(equalized_result, (31, 31))
+    _, binary = cv2.threshold(frame, 50, 255, cv2.THRESH_BINARY)
 
-    return equalized_result
+    return binary
 
 cap = cv2.VideoCapture(0)
 
@@ -40,6 +39,10 @@ else:
          break  # Break the loop if no more frames are read
 
       cv2.imshow('Martian Detection PWP', lanes(frame))
+      if is_5_percent_blue(frame) >= 5:
+          print("Over 5%")
+      else:
+          print("Not Over 5%")
 
       if cv2.waitKey(25) & 0xFF == ord('q'):
          break  # Break the loop if 'q' is pressed
