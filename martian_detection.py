@@ -27,27 +27,30 @@ def ORB(frame):
                'WE ARE NOT ALONE!!'
    """
 
-   martian = cv2.imread('templates/martian.png', 0)
+   martian = cv2.imread('martian.png', 0)
    frame_resized = cv2.resize(frame, (312,380)) # Resize to dimensions of the martian template for ORB
-   frame_blur = cv2.blur(frame_resized, (15,15)) # Reduce noise for less inaccurate matches
+   frame_blur = cv2.blur(frame_resized, (11,11)) # Reduce noise for less inaccurate matches
+
+   frame_gray = cv2.cvtColor(frame_blur, cv2.COLOR_BGR2GRAY)
 
    orb = cv2.ORB_create()
 
    keypoints1, descriptors1 = orb.detectAndCompute(martian, None)
-   keypoints2, descriptors2 = orb.detectAndCompute(frame_blur, None)
+   keypoints2, descriptors2 = orb.detectAndCompute(frame_gray, None)
 
    bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
    try:
       matches = bf.match(descriptors1,descriptors2)
       matches = sorted(matches, key=lambda x: x.distance)
       num_matches = len(matches)
+      print(num_matches)
 
-      if num_matches > 5:
+      if num_matches > 30:
          show_not_alone(frame)
       else:
-         pass
-   except:
-      pass
+         print("nothing")
+   except Exception as e:
+        print("Error in matching:", e)
    return frame
 
 def show_not_alone(frame):
@@ -82,8 +85,8 @@ def show_not_alone(frame):
    cv2.putText(frame, text, position, font, font_scale, color, thickness, cv2.LINE_AA)
 
 
-video_path = '/Users/pl1002215/PycharmProjects/object_detection/templates/IMG_5017.mov'
-cap = cv2.VideoCapture(video_path)
+#video_path = 'IMG_5017.MOV'
+cap = cv2.VideoCapture(0)
 
 if not cap.isOpened():
    print("Error: Could not open video file.")
