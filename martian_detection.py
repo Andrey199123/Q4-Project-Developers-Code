@@ -15,6 +15,9 @@ https://www.geeksforgeeks.org/python-opencv-cv2-puttext-method/
 """
 
 import cv2
+import time
+
+not_alone_timer = 0
 
 def ORB(frame):
    """Detect and display the Martian on each frame.
@@ -27,7 +30,9 @@ def ORB(frame):
                'WE ARE NOT ALONE!!'
    """
 
-   martian = cv2.imread('martian.png', 0)
+   global not_alone_timer
+
+   martian = cv2.imread('templates/martian.png', 0)
    frame_resized = cv2.resize(frame, (312,380)) # Resize to dimensions of the martian template for ORB
    frame_blur = cv2.blur(frame_resized, (11,11)) # Reduce noise for less inaccurate matches
 
@@ -45,7 +50,9 @@ def ORB(frame):
       num_matches = len(matches)
       print(num_matches)
 
-      if num_matches > 30:
+      if num_matches > 30 or not_alone_timer - time.time() > 0:
+         if num_matches > 30:
+            not_alone_timer = time.time() + 5
          show_not_alone(frame)
       else:
          print("nothing")
@@ -85,8 +92,8 @@ def show_not_alone(frame):
    cv2.putText(frame, text, position, font, font_scale, color, thickness, cv2.LINE_AA)
 
 
-#video_path = 'IMG_5017.MOV'
-cap = cv2.VideoCapture(0)
+video_path = '/Users/pl1002215/PycharmProjects/object_detection/templates/IMG_5017.mov'
+cap = cv2.VideoCapture(video_path)
 
 if not cap.isOpened():
    print("Error: Could not open video file.")
