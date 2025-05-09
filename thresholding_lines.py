@@ -21,12 +21,18 @@ def lanes(frame):
 
     #frame = cv2.blur(frame, (31, 31))
     #_, binary = cv2.threshold(frame, 50, 255, cv2.THRESH_BINARY)
-    gray_result = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    equalized_result = cv2.equalizeHist(gray_result)
-    frame = cv2.blur(equalized_result, (31, 31))
-    _, binary = cv2.threshold(frame, 50, 255, cv2.THRESH_BINARY)
+    hsv= cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+    lower_blue = np.array([110, 85, 85])
+    upper_blue = np.array([130, 255, 255])
+    blue_mask = cv2.inRange(hsv, lower_blue, upper_blue)
+    lower_green = np.array([40,100,20])
+    upper_green = np.array([90,255,255])
+    green_mask = cv2.inRange(hsv, lower_green, upper_green)
+    #equalized_result = cv2.equalizeHist(gray_result)
+    #frame = cv2.blur(equalized_result, (31, 31))
+    #_, binary = cv2.threshold(frame, 70, 255, cv2.THRESH_BINARY)
 
-    return binary
+    return green_mask
 
 cap = cv2.VideoCapture(0)
 
