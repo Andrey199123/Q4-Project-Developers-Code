@@ -7,6 +7,8 @@ import cv2
 import numpy as np
 import os.path
 
+MARTIAN_PATH = "/home/insomnia/Documents/Andreytesting/robot_api/camera/martian.png"
+
 previous_lines = []
 previous_mid_x = None
 alpha = 0.9
@@ -14,8 +16,8 @@ Vertical_Detected = False
 Horizontal_Detected = False
 direction = 0
 not_alone = 0
-martian = cv2.imread("/home/insomnia/Documents/Andreytesting/robot_api/camera/martian.png", 0)
-print(os.path.exists('martian.png'))
+martian = cv2.imread(MARTIAN_PATH, 0)
+print(os.path.exists(MARTIAN_PATH))
 def ORB(frame):
     """Detect and display the Martian on each frame.
 
@@ -186,6 +188,9 @@ def get_two_main_lines(lines, frame_width):
         else:
             right_lines.append(line)
 
+        robot_api.api.v2.movement.stop()
+        robot_api.api.v2.movement.forward()   
+    
     if left_lines and right_lines:
         left_line = max(left_lines, key=lambda line: line[0])
         right_line = min(right_lines, key=lambda line: line[0])
@@ -489,6 +494,12 @@ def process_frame(frame):
     mask = np.zeros_like(grey)
     cv2.fillPoly(mask, vertices, 255)
     gray = cv2.bitwise_and(grey, mask)
+    frame = ORB(frame)
+    if not_alone:
+       frame = show_not_alone(frame)
+
+    if is_5_percent_blue(frame):
+        pass
 
     lower_blue = np.array([110, 85, 85])
     upper_blue = np.array([130, 255, 255])
@@ -533,13 +544,11 @@ def process_frame(frame):
         edges,
         rho=1,
         theta=np.pi / 180,
-        threshold=50,
+        threshold=100, #Changed from 50
         minLineLength=80,
         maxLineGap=10,
     )
-
-    frame = ORB(frame)
-    
+ 
     # Filter and draw lines
     filtered_lines = filter_lines(lines)
     if filtered_lines:
@@ -548,53 +557,55 @@ def process_frame(frame):
         frame = cv2.addWeighted(frame, 0.8, line_image, 1, 0)
     # Show the result
     # cv2.imshow('Line Detection', frame)
-    # print(direction)
+    print(direction)
     global turned_left
     global turned_right
-    if direction == "Left":
-        print("Turning Left")
-
+    """if direction == "Left":
         def left():
-            global proc
-            if not proc:
-                proc = True
+            global CURRENTLY_RUNNING_PROCEDURE
+            if not CURRENTLY_RUNNING_PROCEDURE:
+                CURRENTLY_RUNNING_PROCEDURE = True
+                robot_api.api.v2.movement.stop()
+                robot_api.api.v2.movement.forward()
+                time.sleep(6.5)
                 robot_api.api.v2.movement.stop()
                 robot_api.api.v2.movement.left()
-                time.sleep(2)
+                time.sleep(1.4)
                 robot_api.api.v2.movement.stop()
-                proc = False
+                robot_api.api.v2.movement.forward()
+                CURRENTLY_RUNNING_PROCEDURE = False
 
-        if not proc:
+        if not CURRENTLY_RUNNING_PROCEDURE:
             if not turned_left:
                 threading.Thread(target=left).start()
                 turned_left = True
     elif direction == "Right":
-        print("Turning Right")
 
         def right():
-            global proc2
-            if not proc2:
-                proc2 = True
+            global CURRENTLY_RUNNING_PROCEDURE
+            if not CURRENTLY_RUNNING_PROCEDURE:
+                CURRENTLY_RUNNING_PROCEDURE = True
                 robot_api.api.v2.movement.stop()
                 robot_api.api.v2.movement.forward()
-                time.sleep(1)
+                time.sleep(5.5)
                 robot_api.api.v2.movement.stop()
                 robot_api.api.v2.movement.right()
-                time.sleep(1.5)
+                time.sleep(1.47)
                 robot_api.api.v2.movement.stop()
-                proc2 = False
+                robot_api.api.v2.movement.forward()
+                CURRENTLY_RUNNING_PROCEDURE = False
 
-        if not proc2:
+        if not CURRENTLY_RUNNING_PROCEDURE:
             if not turned_right:
                 threading.Thread(target=right).start()
-                turned_right = True
+                turned_right = True"""
     if detect_horizontal_line(frame):
         pass
         # print("HORIZONTAL LINE DETECTED")
         """def turn_right():
-            global CURRENTLY_RUNNING_PROCEDURE2
-            if not CURRENTLY_RUNNING_PROCEDURE2:
-                CURRENTLY_RUNNING_PROCEDURE2 = True
+            global CURRENTLY_RUNNING_PROCEDURE
+            if not CURRENTLY_RUNNING_PROCEDURE:
+                CURRENTLY_RUNNING_PROCEDURE = True
                 robot_api.api.v2.movement.stop()
                 robot_api.api.v2.movement.forward()
                 time.sleep(4)
@@ -605,7 +616,7 @@ def process_frame(frame):
                 robot_api.api.v2.movement.forward()
                 time.sleep(2)
                 robot_api.api.v2.movement.stop()
-                CURRENTLY_RUNNING_PROCEDURE2 = False
+                CURRENTLY_RUNNING_PROCEDURE = False
         def turn_left():
             global CURRENTLY_RUNNING_PROCEDURE
             if not CURRENTLY_RUNNING_PROCEDURE:
@@ -624,11 +635,15 @@ def process_frame(frame):
 
                 CURRENTLY_RUNNING_PROCEDURE = False"""
 
-        if not CURRENTLY_RUNNING_PROCEDURE2:
+        if not CURRENTLY_RUNNING_PROCEDURE:
             pass
             # threading.Thread(target=turn_right).start()
-    """if not_alone:
+    
+    """
+    frame = ORB(frame)
+    if not_alone:
        frame = show_not_alone(frame)
+
     if is_5_percent_blue(frame):
         pass
         # print("Over 5%")
