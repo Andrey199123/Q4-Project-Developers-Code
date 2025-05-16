@@ -1,3 +1,16 @@
-'''HC-SR04 Ultrasonic Sensor
-https://thepihut.com/blogs/raspberry-pi-tutorials/hc-sr04-ultrasonic-range-sensor-on-the-raspberry-pi?srsltid=AfmBOoq_EXLQmTaygTmblwEQIBDrtDxaGMp2A-UnRYLbQLzn0q-unkf4
-'''
+from gpiozero import DistanceSensor
+
+import time
+
+ultrasonic = DistanceSensor(trigger=17, echo=27)
+
+
+
+while True:
+
+    if (ultrasonic.wait_for_in_range):
+
+        print('Distance: ', ultrasonic.distance * 100)
+
+        time.sleep(1)
+
