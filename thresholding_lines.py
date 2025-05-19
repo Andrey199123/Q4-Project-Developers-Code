@@ -28,12 +28,27 @@ def lanes(frame):
     lower_green = np.array([40,100,20])
     upper_green = np.array([90,255,255])
     green_mask = cv2.inRange(hsv, lower_green, upper_green)
+    lower_yellow = np.array([20, 200, 20])
+    upper_yellow = np.array([40, 255, 255])
+    yellow_mask = cv2.inRange(hsv, lower_yellow, upper_yellow)
+    lower_magenta = np.array([140, 100, 20])
+    upper_magenta = np.array([170, 255, 255])
+    magenta_mask = cv2.inRange(hsv, lower_magenta, upper_magenta)
+    lower_redorange = np.array([170,150,20])
+    upper_redorange = np.array([10, 255,255])
+    green_redorange = cv2.inRange(hsv, lower_redorange, upper_redorange)
+    lower_orange = np.array([10, 150,20])
+    upper_orange = np.array([30, 255, 255])
+    orange_mask = cv2.inRange(hsv, lower_orange, upper_orange)
     #equalized_result = cv2.equalizeHist(gray_result)
     #frame = cv2.blur(equalized_result, (31, 31))
     #_, binary = cv2.threshold(frame, 70, 255, cv2.THRESH_BINARY)
 
     return green_mask
 
+img = cv2.imshow("IMG_5133.jpeg", 0)
+cv2.imshow("result", lanes(img))
+'''
 cap = cv2.VideoCapture(0)
 
 if not cap.isOpened():
@@ -55,3 +70,4 @@ else:
 
    cap.release()
    cv2.destroyAllWindows()
+'''
