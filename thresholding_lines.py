@@ -1,54 +1,37 @@
+"""Version 1.0.0
+Author: Emma Chetan
+Functions:
+    isolate_high_saturation(image, saturation_threshold) --> Returns a mask of an input image isolating high saturation
+                                                            values above a certain saturation threshold
+                                                            
+Sources:
+    https://stackoverflow.com/questions/17185151/how-to-obtain-a-single-channel-value-image-from-hsv-image-in-opencv-2-1                                                    
+"""
+
 import cv2
 import numpy as np
-import math
 
-def is_5_percent_blue(frame):
-    mask = lanes(frame)
-    total_pixels = frame.shape[0] * frame.shape[1]
-    black_pixels = np.sum(mask < 1)
-    black_percentage = (black_pixels / total_pixels) * 100
-    return black_percentage
+def isolate_high_saturation(image, saturation_threshold):
+    """Isolates areas with high saturation in an image.
 
-def lanes(frame):
-    '''
-    img = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    blur =
-    ret, thresh = cv2.threshold(img,120,255,cv2.THRESH_TOZERO)
-    cv2.imshow("thresh",thresh)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
-    '''
+    Keyword arguments:
+        image -- Input image.
+        saturation_threshold -- Decimal saturation value above which to isolate.
 
-    #frame = cv2.blur(frame, (31, 31))
-    #_, binary = cv2.threshold(frame, 50, 255, cv2.THRESH_BINARY)
-    hsv= cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-    lower_blue = np.array([110, 85, 85])
-    upper_blue = np.array([130, 255, 255])
-    blue_mask = cv2.inRange(hsv, lower_blue, upper_blue)
-    lower_green = np.array([40,100,20])
-    upper_green = np.array([90,255,255])
-    green_mask = cv2.inRange(hsv, lower_green, upper_green)
-    lower_yellow = np.array([20, 200, 20])
-    upper_yellow = np.array([40, 255, 255])
-    yellow_mask = cv2.inRange(hsv, lower_yellow, upper_yellow)
-    lower_magenta = np.array([140, 100, 20])
-    upper_magenta = np.array([170, 255, 255])
-    magenta_mask = cv2.inRange(hsv, lower_magenta, upper_magenta)
-    lower_redorange = np.array([170,150,20])
-    upper_redorange = np.array([10, 255,255])
-    green_redorange = cv2.inRange(hsv, lower_redorange, upper_redorange)
-    lower_orange = np.array([10, 150,20])
-    upper_orange = np.array([30, 255, 255])
-    orange_mask = cv2.inRange(hsv, lower_orange, upper_orange)
-    #equalized_result = cv2.equalizeHist(gray_result)
-    #frame = cv2.blur(equalized_result, (31, 31))
-    #_, binary = cv2.threshold(frame, 70, 255, cv2.THRESH_BINARY)
+    Returns:
+        mask -- Binary mask highlighting high saturation areas.
+    """
 
-    return green_mask
+    hsv_image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
 
-img = cv2.imshow("IMG_5133.jpeg", 0)
-cv2.imshow("result", lanes(img))
-'''
+    # Extract the saturation channel from the hsv
+    saturation_channel = hsv_image[:, :, 1]
+
+    # Create a mask based on the saturated the values are
+    mask = saturation_channel > (saturation_threshold * 255) # Assuming saturation values are between 0 and 255
+
+    return mask
+
 cap = cv2.VideoCapture(0)
 
 if not cap.isOpened():
@@ -57,17 +40,15 @@ else:
    while True:
       ret, frame = cap.read()
       if not ret:
-         break  # Break the loop if no more frames are read
+         break
+      saturation_threshold = 0.65  # Threshold for how saturated values should be, between 0-1
 
-      cv2.imshow('Martian Detection PWP', lanes(frame))
-      if is_5_percent_blue(frame) >= 5:
-          print("Over 5%")
-      else:
-          print("Not Over 5%")
+      mask= isolate_high_saturation(frame, saturation_threshold)
+      cv2.imshow("Original Image", frame)
+      cv2.imshow("Saturation Mask", mask.astype(np.uint8) * 255)  # Convert mask to 0-255 for display
 
       if cv2.waitKey(25) & 0xFF == ord('q'):
          break  # Break the loop if 'q' is pressed
 
    cap.release()
    cv2.destroyAllWindows()
-'''
