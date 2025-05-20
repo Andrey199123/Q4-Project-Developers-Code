@@ -3,10 +3,11 @@ Author: Emma Chetan
 Functions:
     isolate_high_saturation(image, saturation_threshold) --> Returns a mask of an input image isolating high saturation
                                                             values above a certain saturation threshold
-                                                            
+
 Sources:
-    https://stackoverflow.com/questions/17185151/how-to-obtain-a-single-channel-value-image-from-hsv-image-in-opencv-2-1                                                    
+    https://stackoverflow.com/questions/17185151/how-to-obtain-a-single-channel-value-image-from-hsv-image-in-opencv-2-1
 """
+
 
 import cv2
 import numpy as np
@@ -29,7 +30,8 @@ def isolate_high_saturation(image, saturation_threshold):
 
     # Create a mask based on the saturated the values are
     mask = saturation_channel > (saturation_threshold * 255) # Assuming saturation values are between 0 and 255
-
+    mask = mask.astype(np.uint8) * 255
+    mask = cv2.bitwise_not(mask)
     return mask
 
 cap = cv2.VideoCapture(0)
@@ -43,9 +45,9 @@ else:
          break
       saturation_threshold = 0.65  # Threshold for how saturated values should be, between 0-1
 
-      mask= isolate_high_saturation(frame, saturation_threshold)
+      mask = isolate_high_saturation(frame, saturation_threshold)
       cv2.imshow("Original Image", frame)
-      cv2.imshow("Saturation Mask", mask.astype(np.uint8) * 255)  # Convert mask to 0-255 for display
+      cv2.imshow("Saturation Mask", mask)  # Convert mask to 0-255 for display
 
       if cv2.waitKey(25) & 0xFF == ord('q'):
          break  # Break the loop if 'q' is pressed
