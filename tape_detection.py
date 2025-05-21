@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-def is_significant_saturation_present(frame, saturation_threshold=0.4, min_percent=10, min_region_size=100):
+def is_significant_saturation_present(frame, saturation_threshold=0.4, min_percent=10, min_region_size=600):
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     saturation = hsv[:, :, 1]
     total_pixels = frame.shape[0] * frame.shape[1]
