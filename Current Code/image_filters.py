@@ -4,7 +4,7 @@ import numpy as np
 import cv2
 import numpy as np
 
-def is_significant_saturation_present(frame, saturation_threshold=0.4, min_percent=10):
+def is_significant_saturation_present(frame, saturation_threshold=0.2, min_percent=10):
     """
     Returns True if more than `min_percent` of the image has saturation greater than `saturation_threshold`.
 
