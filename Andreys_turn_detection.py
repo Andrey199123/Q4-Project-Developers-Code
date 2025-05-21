@@ -27,7 +27,7 @@ def detect_lines_in_mask(mask, min_line_length=50, max_line_gap=10, angle_range=
                 filtered_lines.append((x1, y1, x2, y2))
     return filtered_lines
 
-def is_significant_saturation_present(frame, saturation_threshold=0.4, min_percent=10, min_region_size=600):
+def saturation_mask(frame, saturation_threshold=0.4, min_percent=10, min_region_size=600):
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     saturation = hsv[:, :, 1]
     total_pixels = frame.shape[0] * frame.shape[1]
@@ -44,8 +44,7 @@ def is_significant_saturation_present(frame, saturation_threshold=0.4, min_perce
         if stats[i, cv2.CC_STAT_AREA] >= min_region_size:
             filtered_mask[labels == i] = 255
 
-    percent_saturated = (np.sum(filtered_mask > 0) / total_pixels) * 100
-    return percent_saturated >= min_percent, filtered_mask
+    return filtered_mask
 
 def apply_perspective_transform(frame):
     h, w = frame.shape[:2]
@@ -63,7 +62,7 @@ def main():
     transformed = apply_perspective_transform(frame)
 
     while True:
-        _, mask = is_significant_saturation_present(transformed)
+        mask = saturation_mask(transformed)
 
         # fill small holes so skeleton is continuous
         kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (7, 7))
