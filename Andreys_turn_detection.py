@@ -55,7 +55,7 @@ def apply_perspective_transform(frame):
     return cv2.warpPerspective(frame, M, (w, h))
 
 def main():
-    frame = cv2.imread("/Users/andreyvasilyev/Downloads/IMG_8203.jpg")
+    frame = cv2.imread("/imgpath")
     if frame is None:
         print("Error: Could not load image.")
         return
