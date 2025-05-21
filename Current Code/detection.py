@@ -193,8 +193,8 @@ def process_frame(frame):
         action_flags["turned_left"] = False
         action_flags["turned_right"] = False
 
-    #  Horizontal Line Detection for Intersections (T-junctions)
-    if not action_flags["CURRENTLY_RUNNING_PROCEDURE"] and not action_flags["horizontal_line_processed"]:
+    
+    """if not action_flags["CURRENTLY_RUNNING_PROCEDURE"] and not action_flags["horizontal_line_processed"]:
         is_horizontal_present = line_detection_state.get("horizontal_detected", False)
         if is_horizontal_present:
             print("TRANSVERSE HORIZONTAL LINE DETECTED - Potential T-Junction.")
@@ -202,7 +202,7 @@ def process_frame(frame):
             action_flags["CURRENTLY_RUNNING_PROCEDURE"] = True
             threading.Thread(target=robot_actions.execute_intersection_turn,
                              args=(action_flags, turn_parameters, "Right")).start()
-            return frame
+            return frame"""
 
 
     return frame
