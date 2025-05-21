@@ -27,7 +27,7 @@ def detect_lines_in_mask(mask, min_line_length=50, max_line_gap=10, angle_range=
                 filtered_lines.append((x1, y1, x2, y2))
     return filtered_lines
 
-def saturation_mask(frame, saturation_threshold=0.4, min_percent=10, min_region_size=600):
+def saturation_mask(frame, saturation_threshold=0.2, min_percent=10, min_region_size=600):
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     saturation = hsv[:, :, 1]
     total_pixels = frame.shape[0] * frame.shape[1]
