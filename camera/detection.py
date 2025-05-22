@@ -8,7 +8,6 @@ import os
 
 # Import from our new modules
 from robot_api.camera import orb_detector
-# from robot_api.camera import roi_utils # No longer directly needed if ROI logic is fully in line_processing_utils
 from robot_api.camera import line_processing_utils # This module is key now
 from robot_api.camera import image_filters # Still used for initial tape detection and saturation_mask
 from robot_api.camera import robot_actions
