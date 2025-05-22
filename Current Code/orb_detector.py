@@ -76,7 +76,7 @@ def detect_martian_orb(frame, not_alone_timer_end):
         matches = bf.match(descriptors1, descriptors2)
         matches = sorted(matches, key=lambda x: x.distance)
         num_matches = len(matches)
-
+        print(num_matches)
         if num_matches > 10: # Threshold for robust detection
             print("WE ARE NOT ALONE!!!")
             not_alone_timer_end = time.time() + 5  # Show message for 5 seconds
