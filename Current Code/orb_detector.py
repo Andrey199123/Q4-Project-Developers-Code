@@ -78,7 +78,7 @@ def detect_martian_orb(frame, not_alone_timer_end):
         num_matches = len(matches)
 
         if num_matches > 10: # Threshold for robust detection
-            print("WE ARE NOT ALONE (Martian detected!)")
+            print("WE ARE NOT ALONE!!!")
             not_alone_timer_end = time.time() + 5  # Show message for 5 seconds
             robot_api.api.v2.movement.stop() # Stop robot on detection
             frame = show_not_alone_text(frame)
